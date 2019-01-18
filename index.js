@@ -5,6 +5,7 @@ const app = new Koa()
 app.use(Session({
   key: 'koa:sess',
   signed: false,
+  httpOnly: false,
 }, app))
 
 app.use(async (ctx, next) => {
