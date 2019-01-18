@@ -1,5 +1,11 @@
 const Koa = require('koa')
+const Session = require('koa-session')
 const app = new Koa()
+
+app.use(Session({
+  key: 'koa:sess',
+  signed: false,
+}, app))
 
 app.use(async (ctx, next) => {
   if (ctx.path === '/favicon.ico') return
@@ -10,7 +16,9 @@ app.use(async (ctx, next) => {
 })
 
 app.use((ctx, next) => {
-  ctx.body = 'hello world'
+  let n = ctx.session.views || 0;
+  ctx.session.views = ++n;
+  ctx.body = n + ' views';
 })
 
 // app.use(function* (next) {
